@@ -1,0 +1,43 @@
+@startuml
+!define RECTANGLE class
+
+RECTANGLE NumberserviceApplication {
+  + run()
+}
+
+RECTANGLE RandomGenerator {
+  + asSet(): List<Set<Integer>>
+}
+
+RECTANGLE AvailableNumbers {
+  + asSet(): Set<Integer>
+}
+
+RECTANGLE LargestPrimeNumber {
+  + asInteger(): Integer
+}
+
+RECTANGLE IntegerRange {
+  + min: int
+  + max: int
+}
+
+note "Configuration Parameters:\nMIN_RANGE\nMAX_RANGE\nNUM_SETS\nSET_SIZE" as N1
+
+NumberserviceApplication ..> N1
+NumberserviceApplication --> IntegerRange : creates
+NumberserviceApplication --> RandomGenerator : uses
+NumberserviceApplication --> AvailableNumbers : uses
+NumberserviceApplication --> LargestPrimeNumber : uses
+
+RandomGenerator ..> IntegerRange : uses
+AvailableNumbers ..> IntegerRange : uses
+
+RandomGenerator -[#blue]-> AvailableNumbers : List<Set<Integer>>
+AvailableNumbers -[#green]-> LargestPrimeNumber : Set<Integer>
+LargestPrimeNumber -[#red]-> NumberserviceApplication : Integer (largest prime)
+
+note bottom of RandomGenerator : Uses parallel streams
+note bottom of AvailableNumbers : Uses parallel streams
+note bottom of LargestPrimeNumber : Uses parallel streams
+@enduml
